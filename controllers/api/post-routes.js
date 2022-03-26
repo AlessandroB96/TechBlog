@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
     Post.findAll({
         attributes: [
         'id',
-        'post_url',
         'title',
+        'post_content',
         'created_at'
     ],
         order: [['created_at', 'DESC']], //order property to show latest tech news first
