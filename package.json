@@ -7,11 +7,14 @@
     "express-handlebars": "^6.0.3",
     "express-session": "^1.17.2",
     "express-session-sequelize": "^2.3.0",
+    "heroku": "^7.60.0",
     "mysql2": "^2.3.3",
     "sequelize": "^6.17.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seeds/index.js",
+    "heroku-postbuild": "node seeds/index.js"
   },
   "name": "techblog",
   "description": "CMS style tech blog where developers can publish their blog posts and comment on other posts",
