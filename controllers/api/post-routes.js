@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {Post, User, Comment } = require('../../models');
-
+const withAuth = require('../../utils/auth');
 //we reference the User model as well becuase we want to know which user posted
 
 //get all posts from database 
@@ -36,39 +36,37 @@ router.get('/', (req, res) => {
     });
 });
 
-//GET a single post
+// GET /api/posts/1
 router.get('/:id', (req, res) => {
-    Post.findOne({
-        where: {
-            id: req.params.id
-        },
-        attributes: [
-        'id',
-        'post_content',
-        'title',
-        'created_at'
-    ],
+    Post.findByPk(req.params.id,{
+        attributes: ['id', 'post_content', 'title', 'created_at'],
         include: [
-            {
-                model: Comment,
-                attributes: ['id','comment_text','post_id','user_id','created_at'],
-                include: {
-                    model: User,
-                    attributes: ['username'] 
-                } 
-            },
             {
                 model: User,
                 attributes: ['username']
+            },
+            {
+                model: Comment,
+                attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+                include: {
+                    model: User,
+                    attributes: ['username']
+                }
             }
         ]
     })
     .then(dbPostData => {
         if (!dbPostData) {
-            res.status(404).json({ message: 'No post found with this id'});
+            res.status(404).json({ message: 'No post found with this id' });
             return;
         }
         res.json(dbPostData);
+        
+        // serialize the data
+      const post = dbPostData.get({ plain: true });
+
+      // pass data to template
+      res.render('single-post', { post });
     })
     .catch(err => {
         console.log(err);
@@ -77,7 +75,7 @@ router.get('/:id', (req, res) => {
 });
 
 //POST create a post
-router.post('/', (req, res) => {
+router.post('/', withAuth, (req, res) => {
     Post.create({
         title: req.body.title,
         post_url: req.body.post_url,
@@ -90,7 +88,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     Post.destroy({
         where: {
             id: req.params.id

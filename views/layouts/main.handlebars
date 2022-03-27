@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Tech Blog</title>
+    <title>Tech Bloggr</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="wrapper">
-        <header>
-            <nav>
+        <header class="banner">
+            <nav class="navigation">
                 <a href="/">Homepage</a>
                 <a href="/dashboard">Dashboard</a>
                 {{#if loggedIn}}
@@ -21,7 +22,7 @@
                 {{/if}}
             </nav>
             <h1>
-                <a href="/">My Tech Blog</a>
+                <a href="/" class="logo">Tech Bloggr</a>
             </h1>
         </header>
         <main>
