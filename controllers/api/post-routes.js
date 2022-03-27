@@ -78,10 +78,17 @@ router.get('/:id', (req, res) => {
 router.post('/', withAuth, (req, res) => {
     Post.create({
         title: req.body.title,
-        post_url: req.body.post_url,
-        user_id: req.body.user_id
+        post_content: req.body.post_content,
+        user_id: req.session.user_id
     })
-    .then(dbPostData => res.json(dbPostData))
+    .then(dbPostData =>  {
+        res.json(dbPostData)
+      // serialize the data
+      const post = dbPostData.get({ plain: true });
+
+      // pass data to template
+      res.render('add-post', { post });
+    })
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
