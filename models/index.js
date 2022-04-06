@@ -11,6 +11,7 @@ User.hasMany(Post, {
 //belongsTo tells the server that a post can only belong to 1 user
 Post.belongsTo(User, {
     foreignKey: 'user_id',
+    onDelete: 'SET NULL'
 });
 
 Comment.belongsTo(User, {
